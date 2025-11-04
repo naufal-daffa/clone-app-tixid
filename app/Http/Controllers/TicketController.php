@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
+use App\Models\Cinema;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 
@@ -61,5 +63,12 @@ class TicketController extends Controller
     public function destroy(Ticket $ticket)
     {
         //
+    }
+
+    public function showSeats($scheduleId, $hourId){
+        $schedule = Schedule::where('id', $scheduleId)->with('cinema')->first();
+        // dd($schedule);
+        $hour = $schedule['hours'][$hourId] ?? '';
+        return view('schedule.show-seats', compact('schedule', 'hour'));
     }
 }

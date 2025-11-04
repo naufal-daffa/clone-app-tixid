@@ -191,4 +191,8 @@ class CinemaController extends Controller
             ->rawColumns(['buttons'])
             ->make(true);
     }
+    public function listCinema() {
+        $cinemas = Cinema::all();
+        return view('schedule.cinemas', compact('cinemas'));
+    }
 }

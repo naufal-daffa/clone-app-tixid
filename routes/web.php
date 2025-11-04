@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\TicketController;
 use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\Schedule;
@@ -15,7 +16,7 @@ Route::get('/', [MovieController::class, 'home'])->name('home');
 Route::get('/movies/all', [MovieController::class, 'homeAllMovie'])->name('home.movies.all');
 
 
-Route::get('/schedules/{movie_id}', [MovieController::class, 'movieSchedule'])->name('schedules.detail');
+
 
 Route::get('/signup', function () {
     return view('signup');
@@ -31,6 +32,13 @@ Route::post('/login', [UserController::class, 'login'])->name('login.auth')->mid
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+Route::get('/schedules/{movie_id}', [MovieController::class, 'movieSchedule'])->name('schedules.detail');
+
+Route::get('/cinemas/list', [CinemaController::class, 'listCinema'])->name('cinemas.list');
+
+Route::middleware('isUser')->group(function(){
+    Route::get('/schedules/{scheduleId}/hours/{hourId}/show-seats', [TicketController::class, 'showSeats'])->name('schedules.show_seats');
+});
 
 // route yang ada dibawah ini Group() url awalnya adalah /admin dan name nya admin. karena di prefix/awalan url
 Route::middleware('isAdmin')->prefix('/admin')->name('admin.')->group(function () {

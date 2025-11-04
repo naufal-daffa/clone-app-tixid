@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TIXID</title>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
@@ -122,7 +123,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 px-3" href="#">
+                            <a class="nav-link d-flex align-items-center gap-2 px-3" href="{{ route('cinemas.list') }}">
                                 <i class="fas fa-film"></i>
                                 <span>Bioskop</span>
                             </a>
@@ -137,7 +138,7 @@
                 </ul>
 
 
-                <div class="d-flex justify-content-center flex-grow-1 mx-3">
+                <div class="d-flex justify-content-center mx-3">
                     <div class="input-group" style="max-width: 400px;">
                         <input type="search" class="form-control border-end-0"
                             placeholder="Cari film, bioskop, atau lokasi..." aria-label="Search">
@@ -183,6 +184,7 @@
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script> --}}
     {{-- CDN JS datatables  --}}
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
     @stack('script')
 </body>

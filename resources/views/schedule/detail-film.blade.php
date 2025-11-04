@@ -129,19 +129,45 @@
                         </div>
                         <br>
                         <small class="ms-3">{{ $schedule['cinema']['location'] }}</small>
-                        <div class="d-flex gap-3 ps-3 my-2">
-                            @foreach ($schedule['hours'] as $hours)
-                                <div class="btn btn-outline-secondary">{{ $hours }}</div>
+                        <div class="d-flex gap-3 ps-3 mt-4">
+                            @foreach ($schedule['hours'] as $index => $hours)
+                                <div class="btn btn-outline-secondary" style="cursor: pointer;" onclick="selectedHour('{{ $schedule->id }}', '{{ $index }}', this)">{{ $hours }}</div>
                             @endforeach
                         </div>
                     </div>
                     <hr>
                 @endforeach
             </div>
-            <div class="w-100 p-2 bg-light text-center fixed">
-                <a href="#" class="btn btn-primary"><i class="fa-solid fa-ticket"></i> BELI TIKET</a>
+            <div id="wrap-btn" class="w-100 p-2 bg-light text-center fixed">
+                <a href="javacript:void(0)" class="btn btn-primary" id="btn-ticket"><i class="fa-solid fa-ticket"></i> BELI TIKET</a>
             </div>
         </div>
     </div>
     </div>
 @endsection
+@push('script')
+    <script>
+        let elementBefore = null;
+        function selectedHour(scheduleId, hourId, el){
+            if(elementBefore){
+                elementBefore.style.background = "";
+                elementBefore.style.color = "";
+                elementBefore.style.borderColor = "";
+            }
+            el.style.background = '#112546';
+            el.style.color = 'white';
+            el.style.borderColor = '#112546';
+            elementBefore = el;
+            wrapBtn = document.querySelector('#wrap-btn');
+            btnTicket = document.querySelector('#btn-ticket');
+
+            wrapBtn.classList.remove('bg-light');
+            wrapBtn.style.background = 'white';
+
+            let url = "{{ route('schedules.show_seats', ['scheduleId' => ':scheduleId', 'hourId' => ':hourId']) }}".replace(':scheduleId', scheduleId).replace(':hourId', hourId);
+
+            btnTicket.href = url;
+            btnTicket.style.color = '#112546';
+        }
+    </script>
+@endpush

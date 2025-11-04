@@ -10,6 +10,9 @@
         @if (Session::get('error'))
             <div class="alert alert-danger w-100">{{ Session::get('error') }}</div>
         @endif
+        @if (Session::get('failed'))
+            <div class="alert alert-warning w-100">{{ Session::get('failed') }}</div>
+        @endif
         @error('email')
             <small class="text-danger">{{ $message }}</small>
         @enderror
