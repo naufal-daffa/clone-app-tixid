@@ -6,6 +6,7 @@ use App\Exports\CinemaExport;
 use App\Models\Cinema;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schedule as FacadesSchedule;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -35,11 +36,11 @@ class CinemaController extends Controller
     // }
 
     public function index()
-        {
-            $cinemas = Cinema::all();
+    {
+        $cinemas = Cinema::all();
 
-            return view('admin.cinemas.index', compact('cinemas'));
-        }
+        return view('admin.cinemas.index', compact('cinemas'));
+    }
 
 
     /**
@@ -67,9 +68,9 @@ class CinemaController extends Controller
             'name' => $request->name,
             'location' => $request->location,
         ]);
-        if($createCinema){
+        if ($createCinema) {
             return redirect()->route('admin.cinemas.index')->with('success', 'Berhasil membuat data!');
-        }else{
+        } else {
             return redirect()->back()->with('error', 'Gagal! silahkan coba lagi');
         };
         //
@@ -80,7 +81,7 @@ class CinemaController extends Controller
      * Display the specified resource.
      */
 
-    public function show(Cinema $cinema)// untuk satu data
+    public function show(Cinema $cinema) // untuk satu data
     {
         //
     }
@@ -117,12 +118,11 @@ class CinemaController extends Controller
             'location' => $request->location
         ]);
 
-        if($updateCinema){
+        if ($updateCinema) {
             return redirect()->route('admin.cinemas.index')->with('success', 'Berhasil mengubah data!');
-        }else{
+        } else {
             return redirect()->back()->with('failed', 'Gagal! silahkan coba lagi');
         };
-
     }
 
     /**
@@ -134,21 +134,21 @@ class CinemaController extends Controller
         // $cinema->delete();
         $deleteCinema = Cinema::where('id', $id)->delete();
         $schedules = Schedule::where('movie_id', $id)->count();
-        if($schedules) {
+        if ($schedules) {
             return redirect()->route('admin.movies.index')->with('failed', 'Tidak dapat menghapus data bioskop! Data tertaut fengan jadwal tayang');
         }
-        if($deleteCinema){
+        if ($deleteCinema) {
             return redirect()->route('admin.cinemas.index')->with('success', 'Data berhasil dihapus!');
-        }else{
+        } else {
             return redirect()->back()->with('failed', 'Gagal! silahkan coba lagi');
         }
     }
     public function exportExcel()
     {
-        $file_name = 'Cinema_list'.'.xlsx';
+        $file_name = 'Cinema_list' . '.xlsx';
         return Excel::download(new CinemaExport, $file_name);
     }
-     public function trash()
+    public function trash()
     {
         // onlyTrashed() mengambil data yang sudah dihapus dengan fungsi soft delete/ destroy
         $cinemas = Cinema::onlyTrashed()->get();
@@ -175,8 +175,9 @@ class CinemaController extends Controller
         }
     }
 
-    public function dataForDatatables(){
-         $cinemas = Cinema::query();
+    public function dataForDatatables()
+    {
+        $cinemas = Cinema::query();
         return DataTables::of($cinemas)
             ->addIndexColumn()
             ->addColumn('buttons', function ($data) {
@@ -191,8 +192,25 @@ class CinemaController extends Controller
             ->rawColumns(['buttons'])
             ->make(true);
     }
-    public function listCinema() {
-        $cinemas = Cinema::all();
+    public function listCinema()
+    {
+        $cinemas = Cinema::whereHas('schedules', function ($query) {
+            $query->whereHas('movie', function ($movieQuery) {
+                $movieQuery->where('actived', 1);
+            });
+        })->get();
+
         return view('schedule.cinemas', compact('cinemas'));
+    }
+
+    public function cinemaSchedules($cinemaId)
+    {
+        $schedules = Schedule::where('cinema_id', $cinemaId)->with('movie')->whereHas('movie', function ($movies) {
+            $movies->where('actived', 1);
+        })->get();
+
+        // dd($schedules);
+
+        return view('schedule.cinemas-schedules', compact('schedules'));
     }
 }

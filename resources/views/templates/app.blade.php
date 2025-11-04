@@ -162,7 +162,9 @@
     </nav>
 
     <!-- Content -->
-    @yield('content')
+    <div class="mb-5">
+        @yield('content')
+    </div>
 
     <footer class="bg-body-tertiary text-center text-lg-start mt-5">
         <div class="text-center p-3" style="background-color: #ffffff">

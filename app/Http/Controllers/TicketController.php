@@ -66,8 +66,8 @@ class TicketController extends Controller
     }
 
     public function showSeats($scheduleId, $hourId){
-        $schedule = Schedule::where('id', $scheduleId)->with('cinema')->first();
-        // dd($schedule);
+        $schedule = Schedule::where('id', $scheduleId)->with(['cinema', 'movie'])->first();
+        // dd($schedule['movie']);
         $hour = $schedule['hours'][$hourId] ?? '';
         return view('schedule.show-seats', compact('schedule', 'hour'));
     }

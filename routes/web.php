@@ -35,6 +35,7 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/schedules/{movie_id}', [MovieController::class, 'movieSchedule'])->name('schedules.detail');
 
 Route::get('/cinemas/list', [CinemaController::class, 'listCinema'])->name('cinemas.list');
+Route::get('/cinemas/{cinema_id}/schedules', [CinemaController::class, 'cinemaSchedules'])->name('cinemas.schedules');
 
 Route::middleware('isUser')->group(function(){
     Route::get('/schedules/{scheduleId}/hours/{hourId}/show-seats', [TicketController::class, 'showSeats'])->name('schedules.show_seats');

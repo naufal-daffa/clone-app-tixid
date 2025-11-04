@@ -2,7 +2,8 @@
 @section('content')
     <div class="container card my-5 p=4" style="margin-bottom: 10% !important;">
         <div class="card-body">
-            <b>{{ $schedule['cinema']['name'] }}</b><br>
+            <b>{{ $schedule['cinema']['name'] }}</b> ||
+            <b>{{ $schedule['movie']['title'] }}</b><br>
             <b>{{ \Carbon\Carbon::now()->format('d-m-Y') }} || {{ $hour }}</b>
 
             <div class="d-flex justify-content-center">
