@@ -16,17 +16,25 @@ class Schedule extends Model
         'price',
     ];
     // casts digunakan unutk memastikan type data nya
-    protected function casts(): array{
+    protected function casts(): array
+    {
         return [
             'hours' => 'array'
         ];
     }
 
-    public function Cinema(){
+    public function Cinema()
+    {
         return $this->belongsTo(Cinema::class);
     }
 
-    public function Movie(){
+    public function Movie()
+    {
         return $this->belongsTo(Movie::class);
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
     }
 }

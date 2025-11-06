@@ -139,7 +139,7 @@
                 @endforeach
             </div>
             <div id="wrap-btn" class="w-100 p-2 bg-light text-center fixed">
-                <a href="javacript:void(0)" class="btn btn-primary" id="btn-ticket"><i class="fa-solid fa-ticket"></i> BELI TIKET</a>
+                <a href="javascript:void(0)" class="btn btn-primary" id="btn-ticket"><i class="fa-solid fa-ticket"></i> BELI TIKET</a>
             </div>
         </div>
     </div>

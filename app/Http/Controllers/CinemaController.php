@@ -209,6 +209,9 @@ class CinemaController extends Controller
             $movies->where('actived', 1);
         })->get();
 
+        // with ngambil semua (sorting)
+        // whereHas mengambil berdasarkan kondisi tertentu
+
         // dd($schedules);
 
         return view('schedule.cinemas-schedules', compact('schedules'));

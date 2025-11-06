@@ -56,13 +56,19 @@
                 <b>Kursi Dipilih</b>
                 <p id="selectedSeats">-</p>
             </div>
+            {{-- menyimpan valu yang dibutuhkan untuk aksi ringkasan pemesanan --}}
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="user_id">
+            <input type="hidden" name="schedule_id" value="{{ $schedule->id }}" id="schedule_id">
         </div>
-        <a href="javacript:void(0)" class="w-100 text-center fw-bold" id="btn-ticket" style="color: black; cursor: not-allowed;"><i class="fa-solid fa-ticket me-3"></i>RINGKASAN PEMESANAN</a>
+        <div id="btn-order" class="w-100">
+            <a href="javascript:void(0)" class="w-100 text-center fw-bold" id="btn-ticket" style="color: black; cursor: not-allowed;"><i class="fa-solid fa-ticket me-3"></i>RINGKASAN PEMESANAN</a>
+        </div>
     </div>
 @endsection
 @push('script')
     <script>
         let seats = [];
+        let totalPriceData = null
         function selectedSeat(price, row, col, el){
             let seatItem = row + "-" + col;
             let indexSeat = seats.indexOf(seatItem)
@@ -76,6 +82,7 @@
                 el.style.background = "#112646"
             }
             let totalPrice = price * (seats.length)
+            totalPriceData = totalPrice
             let totalPriceEl = document.querySelector('#total')
             totalPriceEl.innerText = "Rp. " + totalPrice
 
@@ -83,6 +90,47 @@
 
             selectedSeatEl.innerText = seats.join(", ")
 
+
+            // jika seats lebih dari/sama denga 1 aktifkan order dan tambaha fungsi
+            let btnOrder = document.querySelector('#btn-order')
+            let teksOrder = document.querySelector('#btn-ticket')
+            if(seats.length > 0){
+                btnOrder.style.background = '#112646'
+                teksOrder.style.color = 'white'
+                btnOrder.style.cursor = 'pointer'
+                btnOrder.onclick = createTicketData
+            }else{
+                btnOrder.style.background = ''
+                teksOrder.style.color = ''
+                btnOrder.style.cursor = ''
+                btnOrder.onclick = null
+            }
         }
+
+        function createTicketData(){
+            // Asyn js and xml, jika ingin akses data ke serve melaluli js gunakan method. bisa digunakan hanya melalui jquery
+            $.ajax({
+                url: "{{ route('tickets.store') }}", // Routig akses data
+                method: "POST", // http method
+                data: {
+                    _token: "{{ csrf_token() }}", // csrf token
+                    user_id: $('#user_id').val(),
+                    schedule_id: $('#schedule_id').val(),
+                    rows_of_seats: seats,
+                    quantity: seats.length,
+                    total_price: totalPriceData,
+                },
+                success: function(res){
+                    // console.log(response)
+                    let dataTicketId = res.data.id
+                    window.location.href = `/tickets/${dataTicketId}/order`
+                },
+                error: function(massage){
+                    console.log(message);
+                    alert("Terjadi kesalahan ketika membuat data tiket!")
+                }
+            })
+        }
+
     </script>
 @endpush

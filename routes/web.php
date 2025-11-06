@@ -9,6 +9,7 @@ use App\Http\Controllers\TicketController;
 use App\Models\Cinema;
 use App\Models\Movie;
 use App\Models\Schedule;
+use App\Models\Ticket;
 use Illuminate\Support\Facades\Route;
 
 
@@ -39,6 +40,12 @@ Route::get('/cinemas/{cinema_id}/schedules', [CinemaController::class, 'cinemaSc
 
 Route::middleware('isUser')->group(function(){
     Route::get('/schedules/{scheduleId}/hours/{hourId}/show-seats', [TicketController::class, 'showSeats'])->name('schedules.show_seats');
+    Route::prefix('/tickets')->name('tickets.')->group(function(){
+        Route::post('/', [TicketController::class, 'store'])->name('store');
+        Route::get('/{ticketId}/order', [TicketController::class, 'ticketOrder'])->name('order');
+        Route::post('/{ticketId}/barcode', [TicketController::class, 'createBarcode'])->name('barcode');
+        Route::get('/{ticketId}/payment', [TicketController::class, 'paymentPage'])->name('payment');
+    });
 });
 
 // route yang ada dibawah ini Group() url awalnya adalah /admin dan name nya admin. karena di prefix/awalan url

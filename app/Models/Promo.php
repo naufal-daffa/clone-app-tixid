@@ -15,4 +15,9 @@ class Promo extends Model
         'type',
         'actived'
     ];
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }
