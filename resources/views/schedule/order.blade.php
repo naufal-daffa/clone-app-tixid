@@ -90,7 +90,7 @@
                 <b>Detail Pemesanan</b>
                 <table>
                     <tr>
-                        <td>2 Tiket: </td>
+                        <td>{{ count($ticket['rows_of_seats']) }} Tiket: </td>
                         <td><b>{{ implode(',', $ticket['rows_of_seats']) }}</b></td>
                     </tr>
                     <tr>
