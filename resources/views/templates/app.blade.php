@@ -129,7 +129,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2 px-3" href="#">
+                            <a class="nav-link d-flex align-items-center gap-2 px-3" href="{{ route('tickets.index') }}">
                                 <i class="fas fa-ticket-alt"></i>
                                 <span>Tiket Saya</span>
                             </a>
@@ -184,6 +184,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     {{-- <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script> --}}
+
+    {{-- CDN CHART JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     {{-- CDN JS datatables  --}}
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

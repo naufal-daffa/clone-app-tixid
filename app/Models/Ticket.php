@@ -17,7 +17,8 @@ class Ticket extends Model
         'quantity',
         'total_price',
         'actived',
-        'service_fee'
+        'service_fee',
+        'hour',
     ];
 
     protected function casts(): array

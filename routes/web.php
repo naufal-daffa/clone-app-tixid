@@ -41,15 +41,20 @@ Route::get('/cinemas/{cinema_id}/schedules', [CinemaController::class, 'cinemaSc
 Route::middleware('isUser')->group(function(){
     Route::get('/schedules/{scheduleId}/hours/{hourId}/show-seats', [TicketController::class, 'showSeats'])->name('schedules.show_seats');
     Route::prefix('/tickets')->name('tickets.')->group(function(){
+        Route::get('/index', [TicketController::class, 'index'])->name('index');
         Route::post('/', [TicketController::class, 'store'])->name('store');
         Route::get('/{ticketId}/order', [TicketController::class, 'ticketOrder'])->name('order');
         Route::post('/{ticketId}/barcode', [TicketController::class, 'createBarcode'])->name('barcode');
         Route::get('/{ticketId}/payment', [TicketController::class, 'paymentPage'])->name('payment');
+        Route::patch('/{ticketId}/payment/proof', [TicketController::class, 'proofPayment'])->name('payment.proof');
+        Route::get('/{ticketId}', [TicketController::class, 'show'])->name('fajar');
+        Route::get('/{ticketId}', [TicketController::class, 'exportPdf'])->name('export.pdf');
     });
 });
 
 // route yang ada dibawah ini Group() url awalnya adalah /admin dan name nya admin. karena di prefix/awalan url
 Route::middleware('isAdmin')->prefix('/admin')->name('admin.')->group(function () {
+    Route::get('/tickets/chart', [TicketController::class, 'chartData'])->name('tickets.chart');
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');

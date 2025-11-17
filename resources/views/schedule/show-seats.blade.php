@@ -34,10 +34,21 @@
                         @if ($kursi == 7)
                             <div style="width: 85px;"></div>
                         @endif
-                        <div style="background: #112646; border-radius: 18px; width: 60px; height: 50px; cursor: pointer;"
-                            class="text-center d-flex justify-content-center p-3 mx-1 text-white" onclick="selectedSeat('{{ $schedule->price }}', '{{ $baris }}', '{{ $kursi }}', this)" >
-                            <span style="font-size: 12px;">{{ $baris }}-{{ $kursi }}</span>
-                        </div>
+                        @php
+                            $seat = $baris . '-' . $kursi;
+                        @endphp
+                        @if (in_array($seat, $seatsFormat))
+                            <div style="background: #eaeaea; border-radius: 18px; width: 60px; height: 50px;"
+                                class="text-center d-flex justify-content-center p-3 mx-1 text-white">
+                                <span style="font-size: 12px;">{{ $baris }}-{{ $kursi }}</span>
+                            </div>
+                        @else
+                            <div style="background: #112646; border-radius: 18px; width: 60px; height: 50px; cursor: pointer;"
+                                class="text-center d-flex justify-content-center p-3 mx-1 text-white"
+                                onclick="selectedSeat('{{ $schedule->price }}', '{{ $baris }}', '{{ $kursi }}', this)">
+                                <span style="font-size: 12px;">{{ $baris }}-{{ $kursi }}</span>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             @endforeach
@@ -57,11 +68,13 @@
                 <p id="selectedSeats">-</p>
             </div>
             {{-- menyimpan valu yang dibutuhkan untuk aksi ringkasan pemesanan --}}
+            <input type="hidden" name="hour" value="{{ $hour }}" id="hour">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" id="user_id">
             <input type="hidden" name="schedule_id" value="{{ $schedule->id }}" id="schedule_id">
         </div>
         <div id="btn-order" class="w-100">
-            <a href="javascript:void(0)" class="w-100 text-center fw-bold" id="btn-ticket" style="color: black; cursor: not-allowed;"><i class="fa-solid fa-ticket me-3"></i>RINGKASAN PEMESANAN</a>
+            <a href="javascript:void(0)" class="w-100 text-center fw-bold" id="btn-ticket"
+                style="color: black; cursor: not-allowed;"><i class="fa-solid fa-ticket me-3"></i>RINGKASAN PEMESANAN</a>
         </div>
     </div>
 @endsection
@@ -69,15 +82,16 @@
     <script>
         let seats = [];
         let totalPriceData = null
-        function selectedSeat(price, row, col, el){
+
+        function selectedSeat(price, row, col, el) {
             let seatItem = row + "-" + col;
             let indexSeat = seats.indexOf(seatItem)
             // let total = document.querySelector("#total")
 
-            if(indexSeat == -1){
+            if (indexSeat == -1) {
                 seats.push(seatItem)
                 el.style.background = "#3e85ef"
-            }else{
+            } else {
                 seats.splice(indexSeat, 1)
                 el.style.background = "#112646"
             }
@@ -94,12 +108,12 @@
             // jika seats lebih dari/sama denga 1 aktifkan order dan tambaha fungsi
             let btnOrder = document.querySelector('#btn-order')
             let teksOrder = document.querySelector('#btn-ticket')
-            if(seats.length > 0){
+            if (seats.length > 0) {
                 btnOrder.style.background = '#112646'
                 teksOrder.style.color = 'white'
                 btnOrder.style.cursor = 'pointer'
                 btnOrder.onclick = createTicketData
-            }else{
+            } else {
                 btnOrder.style.background = ''
                 teksOrder.style.color = ''
                 btnOrder.style.cursor = ''
@@ -107,7 +121,7 @@
             }
         }
 
-        function createTicketData(){
+        function createTicketData() {
             // Asyn js and xml, jika ingin akses data ke serve melaluli js gunakan method. bisa digunakan hanya melalui jquery
             $.ajax({
                 url: "{{ route('tickets.store') }}", // Routig akses data
@@ -119,18 +133,18 @@
                     rows_of_seats: seats,
                     quantity: seats.length,
                     total_price: totalPriceData,
+                    hour: $('#hour').val(),
                 },
-                success: function(res){
+                success: function(res) {
                     // console.log(response)
                     let dataTicketId = res.data.id
                     window.location.href = `/tickets/${dataTicketId}/order`
                 },
-                error: function(massage){
+                error: function(massage) {
                     console.log(message);
                     alert("Terjadi kesalahan ketika membuat data tiket!")
                 }
             })
         }
-
     </script>
 @endpush
