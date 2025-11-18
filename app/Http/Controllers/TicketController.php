@@ -20,12 +20,14 @@ class TicketController extends Controller
     public function index()
     {
         $ticketActive = Ticket::whereHas('ticketPayment', function($q){
-            $q->whereDate('booked_date', now()->format('Y-m-d'))->whereDate('paid_date', '<>', NULL);
+            $q->whereDate('booked_date', now()->format('Y-m-d'))->where('paid_date', '<>', NULL);
         })->get();
         // <> operator sql untuk yang tidak sebanding
         $ticketNonActive = Ticket::whereHas('ticketPayment', function($q){
-            $q->whereDate('booked_date', now()->format('Y-m-d'))->whereDate('paid_date', '<>', NULL);
+            $q->whereDate('booked_date',  '<' ,now()->format('Y-m-d'))->where('paid_date', '<>', NULL);
         })->get();
+        // dd($ticketActive);
+        // dd($ticketNonActive);
 
         return view('ticket.index', compact(['ticketActive', 'ticketNonActive']));
     }

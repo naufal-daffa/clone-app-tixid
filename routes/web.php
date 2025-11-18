@@ -47,8 +47,8 @@ Route::middleware('isUser')->group(function(){
         Route::post('/{ticketId}/barcode', [TicketController::class, 'createBarcode'])->name('barcode');
         Route::get('/{ticketId}/payment', [TicketController::class, 'paymentPage'])->name('payment');
         Route::patch('/{ticketId}/payment/proof', [TicketController::class, 'proofPayment'])->name('payment.proof');
-        Route::get('/{ticketId}', [TicketController::class, 'show'])->name('fajar');
-        Route::get('/{ticketId}', [TicketController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/{ticketId}/show', [TicketController::class, 'show'])->name('fajar');
+        Route::get('/{ticketId}/show/bukti-pembayaran', [TicketController::class, 'exportPdf'])->name('export.pdf');
     });
 });
 
