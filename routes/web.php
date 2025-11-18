@@ -88,6 +88,7 @@ Route::middleware('isAdmin')->prefix('/admin')->name('admin.')->group(function (
         Route::get('/datatable', [UserController::class, 'dataForDatatables'])->name('datatables');
     });
     Route::prefix('/movies')->name('movies.')->group(function () {
+        Route::get('/chart', [MovieController::class, 'chartData'])->name('chart');
         Route::get('/', [MovieController::class, 'index'])->name('index');
         Route::get('/create', [MovieController::class, 'create'])->name('create');
         Route::post('/store', [MovieController::class, 'store'])->name('store');

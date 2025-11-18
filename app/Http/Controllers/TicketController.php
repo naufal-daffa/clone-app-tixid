@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use App\Models\Cinema;
+use App\Models\Movie;
 use App\Models\Promo;
 use App\Models\Ticket;
 use App\Models\TicketPayment;
@@ -39,6 +40,7 @@ class TicketController extends Controller
         })->get()->groupBy(function($ticket){
             return \Carbon\Carbon::parse($ticket['ticketPayment']['booked_date'])->format('Y-m-d');
         })->toArray();
+        // $movies = Movie::where('actived', 1)->get()->toArray();
         // dd($tickets);
         // ambil data key/index
         $labels = array_keys($tickets);
@@ -50,7 +52,7 @@ class TicketController extends Controller
         }
         return response()->json([
             'labels' => $labels,
-            'data' => $data
+            'data' => $data,
         ]);
     }
 

@@ -87,7 +87,7 @@
                 <ul class="navbar-nav me-auto">
                     @if (Auth::check() && Auth::user()->role == 'admin')
                         <li>
-                            <a class="nav-link" href="#">Dashboard</a>
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a data-mdb-dropdown-init class="nav-link dropdown-toggle" href="#"

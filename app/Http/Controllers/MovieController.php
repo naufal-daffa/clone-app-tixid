@@ -344,4 +344,15 @@ class MovieController extends Controller
             ->rawColumns(['imgPoster', 'activeBadge', 'buttons'])
             ->make(true);
     }
+
+    public function chartData() {
+        $moviesActive = Movie::where('actived', 1)->count();
+        $moviesNonActive = Movie::where('actived', 0)->count();
+        $labels = ['Film Aktif', 'Film Tidak Aktif'];
+        $data = [$moviesActive, $moviesNonActive];
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
+    }
 }

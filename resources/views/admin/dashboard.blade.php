@@ -9,6 +9,7 @@
                 <canvas id="chartBar"></canvas>
             </div>
             <div style="width: 300px; height: 300px; margin: auto;">
+                <h5>Data Film Sesuai Status</h5>
                 <canvas id="chartPie"></canvas>
             </div>
 
@@ -64,21 +65,31 @@
                             }
                         }
                     });
-                    let rgbOne = Math.random
+                },
+                error: function(err) {
+                    alert('Gagal Memuat Data!');
+                }
+            });
+        });
+    </script>
+    <script>
+        $(function() {
+            $.ajax({
+                url: "{{ route('admin.movies.chart') }}",
+                method: "GET",
+                success: function(res) {
+                    let labels = res.labels;
+                    let data = res.data;
                     new Chart($('#chartPie')[0], {
                         type: 'pie',
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Ticket Terjual',
+                                label: labels,
                                 data: data,
                                 backgroundColor: [
-                                    'rgb(255, 99, 132)',
-                                    'rgb(54, 162, 235)',
-                                    'rgb(255, 205, 86)',
-                                    'rgb(75, 192, 192)',
-                                    'rgb(153, 102, 255)',
-                                    'rgb(255, 159, 64)'
+                                    'rgb(80, 200 ,120)',
+                                    'rgb(255, 0, 0)',
                                 ],
                                 hoverOffset: 1
 
